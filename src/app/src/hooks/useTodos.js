@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getTodos, createTodo as apiCreateTodo } from '../api/todoApi';
+import { getTodos, createTodo as apiCreateTodo, deleteTodo as apiDeleteTodo } from '../api/todoApi';
 
 /**
  * Custom React Hook for managing TODO state, operations, and lifecycle.
@@ -55,6 +55,19 @@ export function useTodos() {
     }
   }, [fetchTodos]);
 
+  // Delete a todo and refresh the list
+  const deleteTodo = useCallback(async (id) => {
+    try {
+      await apiDeleteTodo(id);
+      await fetchTodos();
+      return true;
+    } catch (err) {
+      console.error('Error deleting todo:', err);
+      setError(err.message || 'Failed to delete TODO.');
+      return false;
+    }
+  }, [fetchTodos]);
+
   return {
     todos,
     loading,
@@ -64,5 +77,6 @@ export function useTodos() {
     setSubmitError,
     fetchTodos,
     addTodo,
+    deleteTodo,
   };
 }

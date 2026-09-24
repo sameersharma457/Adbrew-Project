@@ -26,6 +26,11 @@ class TodoRepositoryInterface(ABC):
         """Create and persist a new todo."""
         pass
 
+    @abstractmethod
+    def delete(self, todo_id: str) -> bool:
+        """Delete a todo by its id."""
+        pass
+
 
 class MongoTodoRepository(TodoRepositoryInterface):
     """
@@ -77,4 +82,15 @@ class MongoTodoRepository(TodoRepositoryInterface):
             return self._serialize_todo(todo_document)
         except PyMongoError as exc:
             logger.error(f"Error creating todo in MongoDB: {exc}", exc_info=True)
+            raise
+
+    def delete(self, todo_id: str) -> bool:
+        """
+        Delete a todo document by its ObjectId string.
+        """
+        try:
+            result = self.collection.delete_one({"_id": ObjectId(todo_id)})
+            return result.deleted_count > 0
+        except Exception as exc:
+            logger.error(f"Error deleting todo from MongoDB: {exc}", exc_info=True)
             raise

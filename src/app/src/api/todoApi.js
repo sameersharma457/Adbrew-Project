@@ -55,3 +55,22 @@ export async function createTodo(description) {
 
   return await response.json();
 }
+
+/**
+ * Delete a TODO item on the backend.
+ * @param {string} id - The ID of the TODO to delete.
+ * @returns {Promise<boolean>}
+ */
+export async function deleteTodo(id) {
+  const response = await fetch(`${API_BASE_URL}/todos/${id}/`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || `Failed to delete todo: ${response.status} ${response.statusText}`);
+  }
+
+  return true;
+}
+

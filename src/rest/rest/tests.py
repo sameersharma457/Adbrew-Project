@@ -92,3 +92,11 @@ class TodoApiIntegrationTestCase(TestCase):
         response = self.client.post('/todos/', {'description': ''}, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('error', response.data)
+
+    def test_delete_todo_success(self):
+        # Create a todo first
+        post_res = self.client.post('/todos/', {'description': 'To be deleted'}, format='json')
+        todo_id = post_res.data['id']
+        # Delete it
+        del_res = self.client.delete(f'/todos/{todo_id}/')
+        self.assertEqual(del_res.status_code, status.HTTP_200_OK)

@@ -5,7 +5,7 @@ import TodoItem from './TodoItem';
  * TodoList component renders the collection of todos.
  * Handles loading, error, empty, and populated list states.
  */
-export function TodoList({ todos, loading, error, onRetry }) {
+export function TodoList({ todos, loading, error, onRetry, onDelete }) {
   return (
     <div className="todo-list-container">
       <h1>List of TODOs</h1>
@@ -32,7 +32,7 @@ export function TodoList({ todos, loading, error, onRetry }) {
       <ul className="todo-list">
         {todos.map((todo, index) => {
           const key = (typeof todo === 'object' && todo.id) ? todo.id : (todo._id || index);
-          return <TodoItem key={key} todo={todo} />;
+          return <TodoItem key={key} todo={todo} onDelete={onDelete} />;
         })}
       </ul>
     </div>

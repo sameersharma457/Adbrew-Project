@@ -50,3 +50,12 @@ class TodoService:
 
         logger.info(f"Creating todo: '{description}'")
         return self.repository.create(description)
+
+    def delete_todo(self, todo_id: Any) -> bool:
+        """
+        Validate ID and delete a todo.
+        """
+        if not todo_id or not isinstance(todo_id, str) or not todo_id.strip():
+            raise ValidationError("A valid TODO ID is required for deletion.")
+        logger.info(f"Deleting todo with ID: {todo_id}")
+        return self.repository.delete(todo_id.strip())

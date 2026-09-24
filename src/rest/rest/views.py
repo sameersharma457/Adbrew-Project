@@ -64,3 +64,23 @@ class TodoListView(APIView):
                 {"error": "Failed to create TODO item in database."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+    def delete(self, request, todo_id=None):
+        """
+        DELETE /todos/<id>/ or DELETE /todos/?id=<id>
+        Deletes a TODO item from MongoDB.
+        """
+        target_id = todo_id or request.query_params.get('id') or (request.data.get('id') if isinstance(request.data, dict) else None)
+        try:
+            success = todo_service.delete_todo(target_id)
+            if success:
+                return Response({"message": "TODO deleted successfully."}, status=status.HTTP_200_OK)
+            return Response({"error": "TODO item not found."}, status=status.HTTP_404_NOT_FOUND)
+        except ValidationError as val_err:
+            return Response({"error": str(val_err)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as exc:
+            logger.error(f"Error handling DELETE /todos: {exc}", exc_info=True)
+            return Response(
+                {"error": "Failed to delete TODO item."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

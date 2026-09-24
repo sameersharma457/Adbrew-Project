@@ -1,27 +1,41 @@
+import React from 'react';
 import './App.css';
-import logo from './logo.svg';
+import { useTodos } from './hooks/useTodos';
+import TodoList from './components/TodoList';
+import TodoForm from './components/TodoForm';
 
-
+/**
+ * Main application component.
+ * Integrates TodoList and TodoForm components driven by the useTodos hook.
+ */
 export function App() {
+  const {
+    todos,
+    loading,
+    error,
+    submitting,
+    submitError,
+    setSubmitError,
+    fetchTodos,
+    addTodo,
+  } = useTodos();
+
   return (
     <div className="App">
-      <div>
-        <h1>List of TODOs</h1>
-        <li>Learn Docker</li>
-        <li>Learn React</li>
-      </div>
-      <div>
-        <h1>Create a ToDo</h1>
-        <form>
-          <div>
-            <label for="todo">ToDo: </label>
-            <input type="text" />
-          </div>
-          <div style={{"marginTop": "5px"}}>
-            <button>Add ToDo!</button>
-          </div>
-        </form>
-      </div>
+      <main className="todo-app-card">
+        <TodoList
+          todos={todos}
+          loading={loading}
+          error={error}
+          onRetry={fetchTodos}
+        />
+        <TodoForm
+          onSubmit={addTodo}
+          submitting={submitting}
+          submitError={submitError}
+          clearSubmitError={setSubmitError}
+        />
+      </main>
     </div>
   );
 }

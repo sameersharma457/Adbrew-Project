@@ -51,6 +51,32 @@ class TodoService:
         logger.info(f"Creating todo: '{description}'")
         return self.repository.create(description)
 
+    def update_todo(self, todo_id: Any, payload: Any) -> Dict[str, Any]:
+        """
+        Validate ID and description, then update the todo.
+        """
+        if not todo_id or not isinstance(todo_id, str) or not todo_id.strip():
+            raise ValidationError("A valid TODO ID is required for update.")
+
+        description = None
+        if isinstance(payload, dict):
+            description = payload.get('description') or payload.get('todo') or payload.get('title')
+        elif isinstance(payload, str):
+            description = payload
+
+        if not description or not isinstance(description, str) or not description.strip():
+            raise ValidationError("TODO description cannot be empty.")
+
+        description = description.strip()
+        if len(description) > 500:
+            raise ValidationError("TODO description cannot exceed 500 characters.")
+
+        logger.info(f"Updating todo {todo_id} with description: '{description}'")
+        updated = self.repository.update(todo_id.strip(), description)
+        if not updated:
+            raise ValidationError(f"Todo with ID {todo_id} was not found.")
+        return updated
+
     def delete_todo(self, todo_id: Any) -> bool:
         """
         Validate ID and delete a todo.

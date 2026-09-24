@@ -27,6 +27,11 @@ class TodoRepositoryInterface(ABC):
         pass
 
     @abstractmethod
+    def update(self, todo_id: str, description: str) -> Optional[Dict[str, Any]]:
+        """Update an existing todo."""
+        pass
+
+    @abstractmethod
     def delete(self, todo_id: str) -> bool:
         """Delete a todo by its id."""
         pass
@@ -82,6 +87,23 @@ class MongoTodoRepository(TodoRepositoryInterface):
             return self._serialize_todo(todo_document)
         except PyMongoError as exc:
             logger.error(f"Error creating todo in MongoDB: {exc}", exc_info=True)
+            raise
+
+    def update(self, todo_id: str, description: str) -> Optional[Dict[str, Any]]:
+        """
+        Update a todo document description by its ObjectId string.
+        """
+        try:
+            result = self.collection.find_one_and_update(
+                {"_id": ObjectId(todo_id)},
+                {"$set": {"description": description.strip(), "updated_at": datetime.utcnow()}},
+                return_document=True
+            )
+            if result:
+                return self._serialize_todo(result)
+            return None
+        except Exception as exc:
+            logger.error(f"Error updating todo {todo_id} in MongoDB: {exc}", exc_info=True)
             raise
 
     def delete(self, todo_id: str) -> bool:

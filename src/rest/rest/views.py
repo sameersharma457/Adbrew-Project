@@ -65,6 +65,24 @@ class TodoListView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+    def put(self, request, todo_id=None):
+        """
+        PUT /todos/<id>/ or PUT /todos/
+        Updates a TODO item description in MongoDB.
+        """
+        target_id = todo_id or request.query_params.get('id') or (request.data.get('id') if isinstance(request.data, dict) else None)
+        try:
+            updated_todo = todo_service.update_todo(target_id, request.data)
+            return Response(updated_todo, status=status.HTTP_200_OK)
+        except ValidationError as val_err:
+            return Response({"error": str(val_err)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as exc:
+            logger.error(f"Error handling PUT /todos: {exc}", exc_info=True)
+            return Response(
+                {"error": "Failed to update TODO item in database."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
     def delete(self, request, todo_id=None):
         """
         DELETE /todos/<id>/ or DELETE /todos/?id=<id>

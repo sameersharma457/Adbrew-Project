@@ -74,23 +74,83 @@ h1 {
   font-weight: 500;
 }
 
+.todo-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.edit-todo-btn,
 .delete-todo-btn {
   background: transparent;
-  color: #9ca3af;
   border: none;
-  font-size: 1.1rem;
-  font-weight: bold;
+  font-size: 1rem;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 4px 6px;
   border-radius: 4px;
   line-height: 1;
   transition: all 0.15s ease;
-  margin-left: 12px;
+}
+
+.edit-todo-btn:hover {
+  background-color: #e0e7ff;
 }
 
 .delete-todo-btn:hover {
-  color: #dc2626;
   background-color: #fee2e2;
+}
+
+.todo-edit-mode {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.todo-edit-input {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 0.95rem;
+  border: 1.5px solid #4f46e5;
+  border-radius: 5px;
+  outline: none;
+}
+
+.todo-edit-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.save-btn {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.save-btn:hover {
+  background-color: #059669;
+}
+
+.cancel-btn {
+  background-color: #9ca3af;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.cancel-btn:hover {
+  background-color: #6b7280;
 }
 
 .empty-message {

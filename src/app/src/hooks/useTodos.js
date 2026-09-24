@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getTodos, createTodo as apiCreateTodo, deleteTodo as apiDeleteTodo } from '../api/todoApi';
+import {
+  getTodos,
+  createTodo as apiCreateTodo,
+  deleteTodo as apiDeleteTodo,
+  updateTodo as apiUpdateTodo
+} from '../api/todoApi';
 
 /**
  * Custom React Hook for managing TODO state, operations, and lifecycle.
@@ -43,7 +48,6 @@ export function useTodos() {
       setSubmitting(true);
       setSubmitError(null);
       await apiCreateTodo(description.trim());
-      // Re-fetch todos from backend to reflect MongoDB state
       await fetchTodos();
       return true;
     } catch (err) {
@@ -52,6 +56,22 @@ export function useTodos() {
       return false;
     } finally {
       setSubmitting(false);
+    }
+  }, [fetchTodos]);
+
+  // Edit an existing todo and refresh the list
+  const editTodo = useCallback(async (id, newDescription) => {
+    if (!newDescription || !newDescription.trim()) {
+      return false;
+    }
+    try {
+      await apiUpdateTodo(id, newDescription.trim());
+      await fetchTodos();
+      return true;
+    } catch (err) {
+      console.error('Error editing todo:', err);
+      setError(err.message || 'Failed to update TODO.');
+      return false;
     }
   }, [fetchTodos]);
 
@@ -77,6 +97,9 @@ export function useTodos() {
     setSubmitError,
     fetchTodos,
     addTodo,
+    editTodo,
     deleteTodo,
   };
 }
+
+export default useTodos;

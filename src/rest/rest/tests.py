@@ -100,3 +100,12 @@ class TodoApiIntegrationTestCase(TestCase):
         # Delete it
         del_res = self.client.delete(f'/todos/{todo_id}/')
         self.assertEqual(del_res.status_code, status.HTTP_200_OK)
+
+    def test_update_todo_success(self):
+        # Create a todo first
+        post_res = self.client.post('/todos/', {'description': 'Original Title'}, format='json')
+        todo_id = post_res.data['id']
+        # Update it
+        put_res = self.client.put(f'/todos/{todo_id}/', {'description': 'Updated Title'}, format='json')
+        self.assertEqual(put_res.status_code, status.HTTP_200_OK)
+        self.assertEqual(put_res.data['description'], 'Updated Title')

@@ -74,3 +74,28 @@ export async function deleteTodo(id) {
   return true;
 }
 
+/**
+ * Update an existing TODO item description on the backend.
+ * @param {string} id - The ID of the TODO.
+ * @param {string} description - The new description.
+ * @returns {Promise<Object>}
+ */
+export async function updateTodo(id, description) {
+  const response = await fetch(`${API_BASE_URL}/todos/${id}/`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({ description }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || `Failed to update todo: ${response.status} ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+

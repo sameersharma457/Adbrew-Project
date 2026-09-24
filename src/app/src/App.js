@@ -18,6 +18,7 @@ export function App() {
     setSubmitError,
     fetchTodos,
     addTodo,
+    editTodo,
     deleteTodo,
   } = useTodos();
 
@@ -29,6 +30,7 @@ export function App() {
           loading={loading}
           error={error}
           onRetry={fetchTodos}
+          onEdit={editTodo}
           onDelete={deleteTodo}
         />
         <TodoForm

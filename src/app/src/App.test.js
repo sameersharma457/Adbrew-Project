@@ -63,4 +63,50 @@ describe('App Component', () => {
       expect(screen.getByText('New Todo Added')).toBeInTheDocument();
     });
   });
+
+  test('clicking Delete button calls deleteTodo API and refreshes list', async () => {
+    todoApi.getTodos
+      .mockResolvedValueOnce([{ id: '102', description: 'Item to delete' }])
+      .mockResolvedValueOnce([]);
+    todoApi.deleteTodo.mockResolvedValueOnce(true);
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Item to delete')).toBeInTheDocument();
+    });
+
+    const deleteBtn = screen.getByRole('button', { name: /Delete/i });
+    fireEvent.click(deleteBtn);
+
+    await waitFor(() => {
+      expect(todoApi.deleteTodo).toHaveBeenCalledWith('102');
+    });
+  });
+
+  test('clicking Edit button allows updating todo description', async () => {
+    todoApi.getTodos
+      .mockResolvedValueOnce([{ id: '103', description: 'Old Description' }])
+      .mockResolvedValueOnce([{ id: '103', description: 'Updated Description' }]);
+    todoApi.updateTodo.mockResolvedValueOnce({ id: '103', description: 'Updated Description' });
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Old Description')).toBeInTheDocument();
+    });
+
+    const editBtn = screen.getByRole('button', { name: /Edit/i });
+    fireEvent.click(editBtn);
+
+    const editInput = screen.getByDisplayValue('Old Description');
+    fireEvent.change(editInput, { target: { value: 'Updated Description' } });
+
+    const saveBtn = screen.getByRole('button', { name: /Save/i });
+    fireEvent.click(saveBtn);
+
+    await waitFor(() => {
+      expect(todoApi.updateTodo).toHaveBeenCalledWith('103', 'Updated Description');
+    });
+  });
 });

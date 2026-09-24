@@ -77,27 +77,39 @@ h1 {
 .todo-item-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  margin-left: 12px;
 }
 
-.edit-todo-btn,
-.delete-todo-btn {
-  background: transparent;
+.action-btn {
   border: none;
-  font-size: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
   cursor: pointer;
-  padding: 4px 6px;
-  border-radius: 4px;
+  padding: 5px 10px;
+  border-radius: 5px;
   line-height: 1;
-  transition: all 0.15s ease;
+  transition: all 0.15s ease-in-out;
 }
 
-.edit-todo-btn:hover {
+.edit-btn {
   background-color: #e0e7ff;
+  color: #4338ca;
 }
 
-.delete-todo-btn:hover {
+.edit-btn:hover {
+  background-color: #c7d2fe;
+  color: #3730a3;
+}
+
+.delete-btn {
   background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.delete-btn:hover {
+  background-color: #fecaca;
+  color: #991b1b;
 }
 
 .todo-edit-mode {

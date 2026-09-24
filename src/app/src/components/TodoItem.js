@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 /**
  * TodoItem component represents an individual TODO entry in the list.
- * Supports viewing, inline editing, and deletion.
+ * Displays the description with prominent Edit and Delete action buttons on the side.
  */
 export function TodoItem({ todo, onEdit, onDelete }) {
   const description = typeof todo === 'string' ? todo : (todo.description || todo.todo || todo.title || '');
@@ -60,24 +60,24 @@ export function TodoItem({ todo, onEdit, onDelete }) {
             {id && onEdit && (
               <button
                 type="button"
-                className="edit-todo-btn"
-                title="Edit TODO"
+                className="action-btn edit-btn"
+                title="Edit this TODO"
                 onClick={() => {
                   setEditText(description);
                   setIsEditing(true);
                 }}
               >
-                ✏️
+                Edit
               </button>
             )}
             {id && onDelete && (
               <button
                 type="button"
-                className="delete-todo-btn"
-                title="Delete TODO"
+                className="action-btn delete-btn"
+                title="Delete this TODO"
                 onClick={() => onDelete(id)}
               >
-                🗑️
+                Delete
               </button>
             )}
           </div>

@@ -82,34 +82,40 @@ h1 {
 }
 
 .action-btn {
-  border: none;
-  font-size: 0.8rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
   cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 5px;
+  padding: 6px 8px;
+  border-radius: 6px;
   line-height: 1;
   transition: all 0.15s ease-in-out;
 }
 
-.edit-btn {
+.edit-icon-btn {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border-color: #e5e7eb;
+}
+
+.edit-icon-btn:hover {
   background-color: #e0e7ff;
   color: #4338ca;
+  border-color: #c7d2fe;
 }
 
-.edit-btn:hover {
-  background-color: #c7d2fe;
-  color: #3730a3;
-}
-
-.delete-btn {
+.delete-icon-btn {
   background-color: #fee2e2;
-  color: #b91c1c;
+  color: #dc2626;
+  border-color: #fca5a5;
 }
 
-.delete-btn:hover {
-  background-color: #fecaca;
-  color: #991b1b;
+.delete-icon-btn:hover {
+  background-color: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+  transform: scale(1.08);
 }
 
 .todo-edit-mode {

@@ -6,10 +6,7 @@ import {
   updateTodo as apiUpdateTodo
 } from '../api/todoApi';
 
-/**
- * Custom React Hook for managing TODO state, operations, and lifecycle.
- * Encapsulates data fetching, optimistic UI updates, loading states, and error handling.
- */
+
 export function useTodos() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +14,6 @@ export function useTodos() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  // Fetch todos from API
   const fetchTodos = useCallback(async () => {
     try {
       setLoading(true);
@@ -32,12 +28,10 @@ export function useTodos() {
     }
   }, []);
 
-  // Initial fetch on mount
   useEffect(() => {
     fetchTodos();
   }, [fetchTodos]);
 
-  // Submit new todo and refresh the list
   const addTodo = useCallback(async (description) => {
     if (!description || !description.trim()) {
       setSubmitError('Please enter a TODO description.');
@@ -59,7 +53,6 @@ export function useTodos() {
     }
   }, [fetchTodos]);
 
-  // Edit an existing todo and refresh the list
   const editTodo = useCallback(async (id, newDescription) => {
     if (!newDescription || !newDescription.trim()) {
       return false;
@@ -75,7 +68,6 @@ export function useTodos() {
     }
   }, [fetchTodos]);
 
-  // Delete a todo and refresh the list
   const deleteTodo = useCallback(async (id) => {
     try {
       await apiDeleteTodo(id);

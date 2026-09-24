@@ -4,10 +4,7 @@ import { useTodos } from './hooks/useTodos';
 import TodoList from './components/TodoList';
 import TodoForm from './components/TodoForm';
 
-/**
- * Main application component.
- * Integrates TodoList and TodoForm components driven by the useTodos hook.
- */
+
 export function App() {
   const {
     todos,

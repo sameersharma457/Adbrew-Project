@@ -2,7 +2,6 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import App from './App';
 import * as todoApi from './api/todoApi';
 
-// Mock the API layer to isolate frontend unit testing
 jest.mock('./api/todoApi');
 
 describe('App Component', () => {
@@ -23,7 +22,6 @@ describe('App Component', () => {
     expect(screen.getByText(/ToDo:/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Add ToDo!/i })).toBeInTheDocument();
 
-    // Verify fetched todos appear
     await waitFor(() => {
       expect(screen.getByText('Sample Item 1')).toBeInTheDocument();
       expect(screen.getByText('Sample Item 2')).toBeInTheDocument();

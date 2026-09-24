@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 
-/**
- * TodoItem component represents an individual TODO entry in the list.
- * Displays the description with an Edit button and a prominent Red Delete button on the right side.
- */
+
 export function TodoItem({ todo, onEdit, onDelete }) {
   const description = typeof todo === 'string' ? todo : (todo.description || todo.todo || todo.title || '');
   const id = typeof todo === 'object' ? (todo.id || todo._id) : null;

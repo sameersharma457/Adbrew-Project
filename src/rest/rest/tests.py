@@ -10,7 +10,6 @@ from .services import TodoService, ValidationError
 
 
 class TodoServiceTestCase(TestCase):
-    """Unit tests for the TodoService business logic and validation."""
 
     def setUp(self):
         self.mock_repo = MagicMock(spec=TodoRepositoryInterface)
@@ -67,7 +66,6 @@ class MongoTodoRepositoryTestCase(TestCase):
 
 
 class TodoApiIntegrationTestCase(TestCase):
-    """Integration tests for the Todo API endpoints."""
 
     def setUp(self):
         self.client = APIClient()

@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 
-/**
- * TodoForm component handles user input for creating a new TODO item.
- * Implements controlled inputs, validation, and submission states.
- */
+
 export function TodoForm({ onSubmit, submitting, submitError, clearSubmitError }) {
   const [description, setDescription] = useState('');
   const [localError, setLocalError] = useState('');

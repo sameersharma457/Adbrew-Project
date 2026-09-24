@@ -10,30 +10,19 @@ from .services import TodoService, ValidationError
 
 logger = logging.getLogger(__name__)
 
-# MongoDB connection configuration with fallbacks for development flexibility
 mongo_host = os.environ.get("MONGO_HOST", "mongo")
 mongo_port = os.environ.get("MONGO_PORT", "27017")
 mongo_uri = f"mongodb://{mongo_host}:{mongo_port}"
 
-# Maintain existing 'db' instance as specified in assignment requirements
 db = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)['test_db']
 
-# Dependency injection: instantiate repository and service
 todo_repository = MongoTodoRepository(db)
 todo_service = TodoService(todo_repository)
 
 
 class TodoListView(APIView):
-    """
-    API endpoint for listing and creating Todo items.
-    Follows RESTful conventions and clean separation of concerns.
-    """
 
     def get(self, request):
-        """
-        GET /todos/
-        Returns a list of all TODO items from MongoDB.
-        """
         try:
             todos = todo_service.get_all_todos()
             return Response(todos, status=status.HTTP_200_OK)
@@ -45,10 +34,7 @@ class TodoListView(APIView):
             )
 
     def post(self, request):
-        """
-        POST /todos/
-        Accepts a TODO item and persists it into MongoDB.
-        """
+
         try:
             created_todo = todo_service.create_todo(request.data)
             return Response(created_todo, status=status.HTTP_201_CREATED)
@@ -66,10 +52,6 @@ class TodoListView(APIView):
             )
 
     def put(self, request, todo_id=None):
-        """
-        PUT /todos/<id>/ or PUT /todos/
-        Updates a TODO item description in MongoDB.
-        """
         target_id = todo_id or request.query_params.get('id') or (request.data.get('id') if isinstance(request.data, dict) else None)
         try:
             updated_todo = todo_service.update_todo(target_id, request.data)
@@ -84,10 +66,6 @@ class TodoListView(APIView):
             )
 
     def delete(self, request, todo_id=None):
-        """
-        DELETE /todos/<id>/ or DELETE /todos/?id=<id>
-        Deletes a TODO item from MongoDB.
-        """
         target_id = todo_id or request.query_params.get('id') or (request.data.get('id') if isinstance(request.data, dict) else None)
         try:
             success = todo_service.delete_todo(target_id)

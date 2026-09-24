@@ -1,10 +1,6 @@
 import React from 'react';
 import TodoItem from './TodoItem';
 
-/**
- * TodoList component renders the collection of todos.
- * Handles loading, error, empty, and populated list states.
- */
 export function TodoList({ todos, loading, error, onRetry, onEdit, onDelete }) {
   return (
     <div className="todo-list-container">
